@@ -35,7 +35,7 @@ class StorageService {
 
   static clear() {
     // TODO: очистить сохранённое состояние
-    localStorage.clear(STORAGE_KEYS.STATE);
+    localStorage.removeItem(STORAGE_KEYS.STATE);
   }
 }
 
@@ -65,7 +65,7 @@ class QuizEngine {
   /** @param {number} index */
   goTo(index) {
     // TODO: валидировать границы и сменить текущий индекс
-    if(index > 0 && index < this.length()) {
+    if(index >= 0 && index < this.length) {
       this.currentIndex = index;
     }
   }
@@ -93,14 +93,20 @@ class QuizEngine {
 
   tick() {
     // TODO: декремент таймера; если 0 — завершить тест
-    if(this.remainingSec == 0) {
+    if(this.remainingSec <= 0) {
       this.finish();
+      stopTimer();
     } else {this.remainingSec-=1;}
   }
 
   finish() {
     // TODO: зафиксировать завершение и вернуть сводку результата
-    this.isFinished = True;
+    this.isFinished = true;
+    const correct = this.questions.filter((q) => this.answers[q.id] === q.correctIndex).length
+    const total = this.length
+    const percent = correct / total
+    const passed = percent >= this.passThreshold
+
     return { correct, total, percent, passed }
   }
 
