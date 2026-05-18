@@ -95,7 +95,7 @@ class QuizEngine {
     // TODO: декремент таймера; если 0 — завершить тест
     if(this.remainingSec == 0) {
       this.isFinished = True
-    } else {this.timeLimitSec-=1}
+    } else {this.remainingSec-=1}
   }
 
   finish() {
