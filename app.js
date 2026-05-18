@@ -83,7 +83,7 @@ class QuizEngine {
   /** @param {number} optionIndex */
   select(optionIndex) {
     // TODO: сохранить выбор пользователя для текущего вопроса
-    
+
   }
 
   getSelectedIndex() {
@@ -93,7 +93,7 @@ class QuizEngine {
 
   tick() {
     // TODO: декремент таймера; если 0 — завершить тест
-    if(this.timeLimitSec == 0) {
+    if(this.remainingSec == 0) {
       this.isFinished = True
     } else {this.timeLimitSec-=1}
   }
