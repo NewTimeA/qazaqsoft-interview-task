@@ -30,12 +30,12 @@ class StorageService {
 
   static loadState() {
     // TODO: прочитать и распарсить состояние, вернуть объект или null
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.STATE))
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.STATE));
   }
 
   static clear() {
     // TODO: очистить сохранённое состояние
-    localStorage.clear(STORAGE_KEYS.STATE)
+    localStorage.clear(STORAGE_KEYS.STATE);
   }
 }
 
@@ -65,55 +65,60 @@ class QuizEngine {
   /** @param {number} index */
   goTo(index) {
     // TODO: валидировать границы и сменить текущий индекс
-    if(index > 0 && index < this.questions.length) {
-      this.currentIndex = index
+    if(index > 0 && index < this.length()) {
+      this.currentIndex = index;
     }
   }
 
   next() {
     // TODO: перейти к следующему вопросу, если возможно
-    this.goTo(this.currentIndex+1)
+    this.goTo(this.currentIndex+1);
   }
 
   prev() {
     // TODO: перейти к предыдущему вопросу, если возможно
-    this.goTo(this.currentIndex+1)
+    this.goTo(this.currentIndex-1);
   }
 
   /** @param {number} optionIndex */
   select(optionIndex) {
     // TODO: сохранить выбор пользователя для текущего вопроса
-
+    this.answers[this.currentQuestion.id] = optionIndex;
   }
 
   getSelectedIndex() {
     // TODO: вернуть выбранный индекс для текущего вопроса (или undefined)
-    
+    return this.answers[this.currentQuestion.id];
   }
 
   tick() {
     // TODO: декремент таймера; если 0 — завершить тест
     if(this.remainingSec == 0) {
-      this.isFinished = True
-    } else {this.remainingSec-=1}
+      this.finish();
+    } else {this.remainingSec-=1;}
   }
 
   finish() {
     // TODO: зафиксировать завершение и вернуть сводку результата
-    // return { correct: number, total: number, percent: number, passed: boolean }
-    
+    this.isFinished = True;
+    return { correct, total, percent, passed }
   }
 
   /** Восстановление/выгрузка состояния для localStorage */
   toState() {
     // TODO: вернуть сериализуемый снимок состояния
-    
+    return {currentIndex: this.currentIndex, answers: this.answers, remainingSec: this.remainingSec, isFinished: this.isFinished}
   }
 
   /** @param {any} state */
   static fromState(quiz, state) {
     // TODO: создать двигатель на базе сохранённого состояния
-    
+    engine = new QuizEngine(quiz);
+    engine.currentIndex = state.currentIndex;
+    engine.answers = state.answers;
+    engine.remainingSec = state.remainingSec;
+    engine.isFinished = state.isFinished;
+    return engine
   }
 }
 
