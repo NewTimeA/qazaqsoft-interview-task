@@ -25,18 +25,17 @@ class Question {
 class StorageService {
   static saveState(state) {
     // TODO: сериализовать state и сохранить в localStorage
-    // Пример: localStorage.setItem(STORAGE_KEYS.STATE, JSON.stringify(state));
-    throw new Error("Not implemented: StorageService.saveState");
+    localStorage.setItem(STORAGE_KEYS.STATE, JSON.stringify(state));
   }
 
   static loadState() {
     // TODO: прочитать и распарсить состояние, вернуть объект или null
-    throw new Error("Not implemented: StorageService.loadState");
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.STATE))
   }
 
   static clear() {
     // TODO: очистить сохранённое состояние
-    throw new Error("Not implemented: StorageService.clear");
+    localStorage.clear(STORAGE_KEYS.STATE)
   }
 }
 
@@ -66,51 +65,55 @@ class QuizEngine {
   /** @param {number} index */
   goTo(index) {
     // TODO: валидировать границы и сменить текущий индекс
-    throw new Error("Not implemented: QuizEngine.goTo");
+    if(index > 0 && index < this.questions.length) {
+      this.currentIndex = index
+    }
   }
 
   next() {
     // TODO: перейти к следующему вопросу, если возможно
-    throw new Error("Not implemented: QuizEngine.next");
+    this.goTo(this.currentIndex+1)
   }
 
   prev() {
     // TODO: перейти к предыдущему вопросу, если возможно
-    throw new Error("Not implemented: QuizEngine.prev");
+    this.goTo(this.currentIndex+1)
   }
 
   /** @param {number} optionIndex */
   select(optionIndex) {
     // TODO: сохранить выбор пользователя для текущего вопроса
-    throw new Error("Not implemented: QuizEngine.select");
+    
   }
 
   getSelectedIndex() {
     // TODO: вернуть выбранный индекс для текущего вопроса (или undefined)
-    throw new Error("Not implemented: QuizEngine.getSelectedIndex");
+    
   }
 
   tick() {
     // TODO: декремент таймера; если 0 — завершить тест
-    throw new Error("Not implemented: QuizEngine.tick");
+    if(this.timeLimitSec == 0) {
+      this.isFinished = True
+    } else {this.timeLimitSec-=1}
   }
 
   finish() {
     // TODO: зафиксировать завершение и вернуть сводку результата
     // return { correct: number, total: number, percent: number, passed: boolean }
-    throw new Error("Not implemented: QuizEngine.finish");
+    
   }
 
   /** Восстановление/выгрузка состояния для localStorage */
   toState() {
     // TODO: вернуть сериализуемый снимок состояния
-    throw new Error("Not implemented: QuizEngine.toState");
+    
   }
 
   /** @param {any} state */
   static fromState(quiz, state) {
     // TODO: создать двигатель на базе сохранённого состояния
-    throw new Error("Not implemented: QuizEngine.fromState");
+    
   }
 }
 
